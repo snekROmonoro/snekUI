@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource.h"
+#include "resource.h" /* we use resource for logo image. */
 
 /* D3D9 */
 #include <d3d9.h>

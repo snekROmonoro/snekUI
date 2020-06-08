@@ -170,11 +170,11 @@
     <ClCompile Include="other\renderer\renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="gui-test.rc" />
+    <ResourceCompile Include="snekUI.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="gui-test.ico" />
     <Image Include="small.ico" />
+    <Image Include="snekUI.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
