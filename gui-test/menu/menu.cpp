@@ -48,6 +48,8 @@ void menu::init( ) {
 	window->add_object( std::make_shared< snekUI::checkbox >( "test" ) );
 	window->add_object( std::make_shared< snekUI::combobox >( "test_combo" , std::vector< std::string >{ "first" , "second" } ) );
 	window->add_object( std::make_shared< snekUI::checkbox >( "test2" ) );
+	window->add_object( std::make_shared< snekUI::slider >( "test_slider", 0, 100 ) );
+	window->add_object( std::make_shared< snekUI::checkbox >( "test3" ) );
 
 	initialized = true;
 }

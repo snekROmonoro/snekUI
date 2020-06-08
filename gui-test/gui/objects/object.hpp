@@ -8,7 +8,8 @@ namespace snekUI {
 	enum object_type {
 		object_window,
 		object_checkbox,
-		object_combobox
+		object_combobox,
+		object_slider
 	};
 
 	class object {
