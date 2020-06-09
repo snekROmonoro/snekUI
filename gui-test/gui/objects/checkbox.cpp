@@ -4,7 +4,6 @@
 namespace snekUI {
 
 	void checkbox::think( ) {
-		this->type = object_checkbox;
 
 		auto& parent_window = find_parent< window >( object_window );
 

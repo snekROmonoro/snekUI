@@ -8,11 +8,14 @@ namespace snekUI {
 			draggable = true;
 			drag_title = true;
 
+			column_spacing = 4;
+
 			titlebar_color = color( 42 , 42 , 42 );
 			titletext_color = color( 200 , 200 , 200 );
 			titlebar_size = 20;
 
 			background_color = color( 34 , 34 , 34 );
+			background_group_color = color( 28 , 28 , 28 );
 			border_color = color( 82 , 82 , 82 );
 
 			object_color = color( 50 , 50 , 50 );
@@ -25,11 +28,14 @@ namespace snekUI {
 		bool draggable;
 		bool drag_title;
 
+		int column_spacing;
+
 		color titlebar_color;
 		color titletext_color;
 		int titlebar_size;
 
 		color background_color;
+		color background_group_color;
 		color border_color;
 
 		color object_color;

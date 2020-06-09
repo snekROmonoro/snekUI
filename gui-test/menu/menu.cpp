@@ -45,11 +45,40 @@ void menu::init( ) {
 	window = std::make_shared< snekUI::window >( menu_title_font , menu_font , "snekUI Example Window" , true , VK_INSERT , pos , dim );
 
 	/* add objects to menu */
-	window->add_object( std::make_shared< snekUI::checkbox >( "test" ) );
-	window->add_object( std::make_shared< snekUI::combobox >( "test_combo" , std::vector< std::string >{ "first" , "second" } ) );
-	window->add_object( std::make_shared< snekUI::checkbox >( "test2" ) );
-	window->add_object( std::make_shared< snekUI::slider >( "test_slider", 0, 100 ) );
-	window->add_object( std::make_shared< snekUI::checkbox >( "test3" ) );
+
+	auto new_tab = std::make_shared< snekUI::tab >( "tab" ); {
+
+		auto new_group = std::make_shared< snekUI::group >( "group1" ); {
+			new_group->add_element( std::make_shared< snekUI::checkbox >( "test" ) );
+			new_group->add_element( std::make_shared< snekUI::combobox >( "test_combo" , std::vector< std::string >{ "first" , "second" } ) );
+			new_group->add_element( std::make_shared< snekUI::checkbox >( "test2" ) );
+			new_group->add_element( std::make_shared< snekUI::slider >( "test_slider" , 0 , 100 ) );
+			new_group->add_element( std::make_shared< snekUI::checkbox >( "test3" ) );
+		} new_tab->add_element( new_group );
+
+		new_tab->add_columns( 1 );
+
+		auto new_group2 = std::make_shared< snekUI::group >( "group2" ); {
+			new_group2->add_element( std::make_shared< snekUI::checkbox >( "test2" ) );
+		} new_tab->add_element( new_group2 );
+
+		new_tab->add_columns( 1 );
+
+	} window->add_object( new_tab );
+
+	auto new_tab2 = std::make_shared< snekUI::tab >( "tab2" ); {
+
+		auto new_group = std::make_shared< snekUI::group >( "group1" ); {
+			new_group->add_element( std::make_shared< snekUI::checkbox >( "test" ) );
+		} new_tab2->add_element( new_group );
+
+		auto new_group2 = std::make_shared< snekUI::group >( "group2" ); {
+			new_group2->add_element( std::make_shared< snekUI::checkbox >( "test2" ) );
+		} new_tab2->add_element( new_group2 );
+
+		new_tab2->add_columns( 2 );
+
+	} window->add_object( new_tab2 );
 
 	initialized = true;
 }

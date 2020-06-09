@@ -16,6 +16,8 @@ namespace snekUI {
 			this->key = key;
 			this->pos = pos;
 			this->dim = dim;
+			
+			type = object_window;
 		}
 
 		window( LPD3DXFONT title_font , LPD3DXFONT font , std::string title , bool opened , int key , int x , int y , int w , int h ) {
@@ -26,6 +28,8 @@ namespace snekUI {
 			this->key = key;
 			this->pos = renderer::pos { x , y };
 			this->dim = renderer::dim { w , h };
+
+			type = object_window;
 		}
 
 		~window( ) { }

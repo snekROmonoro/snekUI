@@ -8,7 +8,6 @@ namespace snekUI {
 
 	void combobox::think( )
 	{
-		this->type = object_combobox;
 
 		auto& parent_window = find_parent< window >( object_window );
 
@@ -36,18 +35,21 @@ namespace snekUI {
 			max_item_label_index++;
 		}
 
-		/* get area to draw main rectangle ( which we gonna use to open items area )*/
-		/* TODO: Adding childs and getting max child width. */
+		/* get combo_area to draw main rectangle ( which we gonna use to open items combo_area )*/
+#ifdef COMBOBOX_WIDTH_AUTO /* using text-size, not max child width. */
 		std::string max_label = this->items [ std::pair< int , int >( *std::max_element( max_item_label_capacity.begin( ) , max_item_label_capacity.end( ) ) ).first ];
 		renderer::dim label_text_size = render.text_size( this->text + " - " + max_label , parent_window.font );
-		this->area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y, label_text_size.w + max_item_size.w, text_size.h };
+		this->combo_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y, label_text_size.w + max_item_size.w, text_size.h };
+#else
+		this->combo_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y, this->area.w, text_size.h };
+#endif
 
-		/* get items area */
+		/* get items combo_area */
 		/* INFO: we do '+ this->items.size( )' because we are going to draw 1 pixel down every item */
-		this->items_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y + this->area.h + 2, this->area.w , max_item_size.h + int( this->items.size( ) ) };
+		this->items_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y + this->combo_area.h + 2, this->combo_area.w , max_item_size.h + int( this->items.size( ) ) };
 
 		/* handle opening items selector */
-		if ( render.mouse_click_in_region( this->area ) ) {
+		if ( render.mouse_click_in_region( this->combo_area ) ) {
 			this->opened = !this->opened;
 		}
 
@@ -74,7 +76,7 @@ namespace snekUI {
 		}
 
 		/* set new cursor pos Y */
-		parent_window.cursor_pos.y += this->area.h + 2;
+		parent_window.cursor_pos.y += this->combo_area.h + 2;
 
 	}
 
@@ -85,13 +87,13 @@ namespace snekUI {
 		auto& parent_window = find_parent< window >( object_window );
 
 		/* main rectangle, where we let the people know they can open this combobox + their selection */
-		render.filled_rect( this->area , parent_window.theme.object_color );
-		render.outlined_rect( this->area , parent_window.theme.border_color );
+		render.filled_rect( this->combo_area , parent_window.theme.object_color );
+		render.outlined_rect( this->combo_area , parent_window.theme.border_color );
 
 		/* label with their selection ( and ofcourse combobox title ) */
 		std::string label_text = this->text + " - " + this->items [ this->value ];
 		renderer::dim label_text_size = render.text_size( label_text , parent_window.font );
-		render.text( { this->area.x + ( this->area.w / 2 ) - ( label_text_size.w / 2 ),  this->area.y + ( this->area.h / 2 ) - ( label_text_size.h / 2 ) } , label_text , parent_window.font , render.mouse_in_region( this->area ) ? parent_window.theme.main_color : parent_window.theme.text_color );
+		render.text( { this->combo_area.x + ( this->combo_area.w / 2 ) - ( label_text_size.w / 2 ),  this->combo_area.y + ( this->combo_area.h / 2 ) - ( label_text_size.h / 2 ) } , label_text , parent_window.font , render.mouse_in_region( this->combo_area ) ? parent_window.theme.main_color : parent_window.theme.text_color );
 
 		/* draw overlay for items selector */
 		if ( this->opened ) {
@@ -109,7 +111,7 @@ namespace snekUI {
 
 					/* draw a line on the bottom ( not for the last index ) */
 					if ( index != this->items.size( ) - 1 ) {
-						render.filled_rect( item_draw_pos , { this->area.w, 1 } , parent_window.theme.border_color );
+						render.filled_rect( item_draw_pos , { this->combo_area.w, 1 } , parent_window.theme.border_color );
 					}
 
 					} );

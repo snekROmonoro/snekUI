@@ -7,6 +7,8 @@ namespace snekUI {
 
 	enum object_type {
 		object_window,
+		object_tab,
+		object_group,
 		object_checkbox,
 		object_combobox,
 		object_slider
@@ -15,6 +17,7 @@ namespace snekUI {
 	class object {
 	public:
 		object* parent = nullptr;
+		renderer::rect area;
 		object_type type;
 
 		template < typename type >

@@ -2,11 +2,11 @@
 #include "window.hpp"
 #include "checkbox.hpp"
 #include "combobox.hpp"
+#include "tab.hpp"
 
 namespace snekUI {
 
 	void window::think( ) {
-		this->type = object_window;
 
 		/* get screen size */
 		renderer::dim screen_size;
@@ -83,6 +83,9 @@ namespace snekUI {
 
 		/* set actual cursor position */
 		this->cursor_pos = this->pos;
+
+		/* set area ( and actually here is the first time we set it ) */
+		this->area = { this->pos.x, this->pos.y, this->dim.w, this->dim.h };
 	}
 
 	void window::draw( ) {
@@ -94,7 +97,7 @@ namespace snekUI {
 		if ( !this->opened ) return;
 
 		/* draw menu background */
-		render.filled_rect( this->pos , this->dim , this->theme.background_color );
+		render.filled_rect( this->area , this->theme.background_color );
 
 		/* title-bar */ {
 			/*
@@ -113,17 +116,67 @@ namespace snekUI {
 			this->cursor_pos.y += this->theme.titlebar_size * 1.25; /* add title bar size and a quarter to Y cursor pos */
 		}
 
-		/* adjust cursor X pos */
-		this->cursor_pos.x += 4;
+		/* move objects inside */
+		this->cursor_pos.x += this->theme.column_spacing;
 
-		/* draw objects */
-		std::for_each(
-			objects.begin( ) ,
-			objects.end( ) ,
-			[ ] ( std::shared_ptr< object >& child ) {
-				child->draw( );
+		/* get tabs */
+		std::vector< std::shared_ptr< tab > > tabs;
+		std::for_each( objects.begin( ) , objects.end( ) , [ & ] ( std::shared_ptr< object >& obj ) {
+			if ( obj->type == object_tab ) {
+				tabs.push_back( std::static_pointer_cast< tab >( obj ) );
 			}
-		);
+			} );
+
+		/* handle tabs */
+		int tab_separate_x = 5;
+		int tab_render_pos_x = this->cursor_pos.x;
+		int add_cursor_pos_y = 0;
+		std::for_each( tabs.begin( ) , tabs.end( ) , [ & ] ( std::shared_ptr< tab >& o_tab ) {
+			int tab_render_width = ( ( this->dim.w - ( this->theme.column_spacing * 2 ) ) / int( tabs.size( ) ) ) - tab_separate_x;
+			int tab_render_height = this->theme.titlebar_size;
+			renderer::rect tab_rect = renderer::rect { tab_render_pos_x, this->cursor_pos.y, tab_render_width, tab_render_height };
+
+			/* handle selecting tab */
+			if ( render.mouse_click_in_region( tab_rect ) ) {
+
+				/* deselect all */
+				std::for_each( tabs.begin( ) , tabs.end( ) , [ & ] ( std::shared_ptr< tab > tab ) {
+					tab->selected = false;
+					} );
+
+				/* select actual tab */
+				o_tab->selected = true;
+			}
+
+			/* draw tab button background */
+			render.filled_rect( tab_rect , this->theme.titlebar_color );
+
+			/* draw tab button title */
+			renderer::dim tab_title_text_size = render.text_size( o_tab->title , this->title_font );
+			render.text( renderer::pos { tab_render_pos_x + ( tab_render_width / 2 ) - ( tab_title_text_size.w / 2 ), this->cursor_pos.y + ( tab_render_height / 2 ) - ( tab_title_text_size.h / 2 ) } , o_tab->title , this->title_font , o_tab->selected ? this->theme.object_select_color : this->theme.titletext_color );
+
+			/* set next tab render pos X */
+			tab_render_pos_x += tab_render_width + ( tab_separate_x * 2 );
+
+			/* set add_cursor_pos_y because we will want to move new objects down */
+			add_cursor_pos_y = tab_render_height;
+
+			} );
+
+		/* move new objects down */
+		this->cursor_pos.y += add_cursor_pos_y + 2;
+
+		/* draw objects inside window */
+		render.clip( this->area , [ = ] ( ) {
+			std::for_each(
+				this->objects.begin( ) ,
+				this->objects.end( ) ,
+				[ ] ( std::shared_ptr< object >& obj ) {
+					obj->draw( );
+				}
+			);
+			} );
+
 	}
 
 	void* window::find_obj( std::string obj_name , object_type obj_type ) {

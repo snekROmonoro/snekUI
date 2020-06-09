@@ -66,6 +66,12 @@
     <ClInclude Include="gui\objects\slider.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gui\objects\tab.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\objects\groupbox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -98,6 +104,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gui\objects\slider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\objects\tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\objects\groupbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

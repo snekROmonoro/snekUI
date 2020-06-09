@@ -13,6 +13,8 @@ namespace snekUI {
 
 			this->hovered_index = -1;
 			this->opened = false;
+
+			type = object_combobox;
 		}
 
 		~combobox( ) { }
@@ -22,7 +24,7 @@ namespace snekUI {
 
 		renderer::rect items_area;
 		bool opened;
-		renderer::rect area;
+		renderer::rect combo_area;
 		int hovered_index;
 		std::string text;
 		std::vector< std::string > items;

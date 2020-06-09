@@ -1,11 +1,33 @@
 #ifndef RENDER_HPP
 #define RENDER_HPP
 
+#include <functional>
 #include <vector>
 #include "../../other/color.hpp"
 #include "../../other/renderer/renderer.hpp"
 namespace snekUI {
+
+	/* many things shouldn't actually be in render.hpp, but since making another file for all of these is useless... */
+	class dividers {
+	public:
+		std::vector< int > columns_per_row;
+	};
+
 	struct render {
+
+		virtual void clip( renderer::rect area , std::function< void( ) > func ) {
+			RECT backup_scissor_rect;
+			renderer::device->GetScissorRect( &backup_scissor_rect );
+
+			RECT rect { area.x - 0.5f, area.y - 0.5f, area.x + area.w - 0.5f, area.y + area.h - 0.5f };
+			renderer::device->SetRenderState( D3DRS_SCISSORTESTENABLE , true );
+			renderer::device->SetScissorRect( &rect );
+
+			func( );
+
+			renderer::device->SetScissorRect( &backup_scissor_rect );
+			renderer::device->SetRenderState( D3DRS_SCISSORTESTENABLE , false );
+		}
 
 		virtual void filled_rect( int x , int y , int width , int height , color color ) {
 			renderer::rectangle( x , y , width , height , color.to_d3d( ) );

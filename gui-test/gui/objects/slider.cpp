@@ -10,9 +10,11 @@ namespace snekUI {
 	}
 
 	void slider::think( ) {
-		this->type = object_slider;
 
 		auto& parent_window = find_parent< window >( object_window );
+
+		/* we are going to do slider width for the whole child */
+		this->slider_size.w = this->area.w;
 
 		/* get text-size */
 		renderer::dim text_size = render.text_size( this->text , parent_window.font );

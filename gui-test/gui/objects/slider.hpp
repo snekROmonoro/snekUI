@@ -11,6 +11,8 @@ namespace snekUI {
 			this->min = min;
 			this->max = max;
 			this->value = value == INT_MAX ? min : value;
+
+			type = object_slider;
 		}
 
 		~slider( ) { }
@@ -18,7 +20,7 @@ namespace snekUI {
 		void think( );
 		void draw( ) override;
 
-		renderer::dim slider_size { 120, 10 }; /* Change this if you want ofcourse. */
+		renderer::dim slider_size { 0, 10 }; /* Change this if you want ofcourse. ( Changing width won't change anything ) */
 		renderer::pos text_pos;
 		renderer::rect slider_rect;
 		std::string text;

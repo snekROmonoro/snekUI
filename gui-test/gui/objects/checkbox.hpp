@@ -9,6 +9,8 @@ namespace snekUI {
 		checkbox( std::string text , const bool& value = false ) {
 			this->text = text;
 			this->value = value;
+
+			type = object_checkbox;
 		}
 
 		~checkbox( ) { }
