@@ -5,6 +5,8 @@
 namespace snekUI {
 	struct theme_t {
 		theme_t( ) {
+			animation_speed = 20 * 0.01; /* we transform the speed to decimals. */
+
 			draggable = true;
 			drag_title = true;
 
@@ -19,11 +21,13 @@ namespace snekUI {
 			border_color = color( 82 , 82 , 82 );
 
 			object_color = color( 50 , 50 , 50 );
-			object_select_color = color( 255 , 182 , 193 );
+			object_select_color = color( 219 , 112 , 147 );
 
 			main_color = color( 255 , 182 , 193 );
 			text_color = color( 200 , 200 , 200 );
 		}
+
+		double animation_speed;
 
 		bool draggable;
 		bool drag_title;

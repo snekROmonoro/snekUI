@@ -52,8 +52,8 @@ namespace snekUI {
 		/* get text-size */
 		renderer::dim text_size = render.text_size( this->text , parent_window.font );
 
-		/* draw label text */
-		render.text( this->text_pos , this->text , parent_window.font , parent_window.theme.text_color );
+		/* draw label text with value */
+		render.text( this->text_pos , this->text + " - " + std::to_string( this->value ) , parent_window.font , parent_window.theme.text_color );
 
 		/* draw main slider rectangle */
 		render.filled_rect( this->slider_rect , parent_window.theme.object_color );
@@ -65,10 +65,11 @@ namespace snekUI {
 		/* draw slider rectangle from start to value */
 		render.filled_rect( renderer::rect { this->slider_rect.x + 1, this->slider_rect.y + 1, slide_value_width, this->slider_rect.h - 1 } , parent_window.theme.object_select_color );
 
-		/* draw value text */
-		std::string value_text = std::to_string( this->value );
-		renderer::dim value_text_size = render.text_size( value_text , parent_window.font );
-		render.text( { this->slider_rect.x + slide_value_width - ( value_text_size.w / 2 ), this->slider_rect.y + ( this->slider_rect.h / 2 ) - ( value_text_size.h / 2 ) } , value_text , parent_window.font , parent_window.theme.text_color );
+		/* draw a 'line' at the end of where we're with the width, to let people know it's an actual slider */
+		if ( slide_value_width > 0 ) {
+			render.filled_rect( renderer::rect { this->slider_rect.x + slide_value_width - 1, this->slider_rect.y + 1, 2, this->slider_rect.h - 2 } , parent_window.theme.object_color );
+			render.outlined_rect( renderer::rect { this->slider_rect.x + slide_value_width - 1, this->slider_rect.y + 1, 2, this->slider_rect.h - 2 } , parent_window.theme.main_color );
+		}
 
 	}
 

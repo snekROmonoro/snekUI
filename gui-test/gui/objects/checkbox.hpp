@@ -18,7 +18,7 @@ namespace snekUI {
 		void think( );
 		void draw( ) override;
 
-		renderer::dim check_size = { 20, 20 };
+		renderer::dim check_size = { 15, 15 };
 		renderer::rect check_area;
 		renderer::rect area;
 		std::string text;

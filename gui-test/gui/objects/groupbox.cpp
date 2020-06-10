@@ -17,7 +17,7 @@ namespace snekUI {
 		renderer::rect group_title_area = { group_area.x, group_area.y, group_area.w, parent_window.theme.titlebar_size < title_text_size.h ? title_text_size.h + 1 : parent_window.theme.titlebar_size };
 		render.filled_rect( group_title_area , parent_window.theme.titlebar_color );
 
-		render.text( { group_title_area.x + 6, group_title_area.y + ( group_title_area.h / 2 ) - ( title_text_size.h / 2 )  } , this->title , parent_window.title_font , parent_window.theme.titletext_color );
+		render.text( { group_title_area.x + 6, group_title_area.y + ( group_title_area.h / 2 ) - ( title_text_size.h / 2 ) } , this->title , parent_window.title_font , parent_window.theme.titletext_color );
 
 		/* move all objects inside group */
 		cursor_pos.x += parent_window.theme.column_spacing;

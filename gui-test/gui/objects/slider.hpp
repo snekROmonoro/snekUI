@@ -20,7 +20,7 @@ namespace snekUI {
 		void think( );
 		void draw( ) override;
 
-		renderer::dim slider_size { 0, 10 }; /* Change this if you want ofcourse. ( Changing width won't change anything ) */
+		renderer::dim slider_size { 0, 15 }; /* Change this if you want ofcourse. ( Changing width won't change anything ) */
 		renderer::pos text_pos;
 		renderer::rect slider_rect;
 		std::string text;

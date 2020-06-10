@@ -128,7 +128,7 @@ namespace snekUI {
 			} );
 
 		/* handle tabs */
-		int tab_separate_x = 5;
+		int tab_separate_x = 2;
 		int tab_render_pos_x = this->cursor_pos.x;
 		int add_cursor_pos_y = 0;
 		std::for_each( tabs.begin( ) , tabs.end( ) , [ & ] ( std::shared_ptr< tab >& o_tab ) {
