@@ -2,6 +2,7 @@
 #define GUI_HPP
 
 #include "objects/object.hpp"
+#include "objects/button.hpp"
 #include "objects/checkbox.hpp"
 #include "objects/combobox.hpp"
 #include "objects/groupbox.hpp"

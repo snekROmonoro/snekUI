@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="gui\gui.hpp" />
+    <ClInclude Include="gui\objects\button.hpp" />
     <ClInclude Include="gui\objects\checkbox.hpp" />
     <ClInclude Include="gui\objects\combobox.hpp" />
     <ClInclude Include="gui\objects\groupbox.hpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gui\objects\button.cpp" />
     <ClCompile Include="gui\objects\checkbox.cpp" />
     <ClCompile Include="gui\objects\combobox.cpp" />
     <ClCompile Include="gui\objects\groupbox.cpp" />
