@@ -21,6 +21,20 @@ namespace renderer {
 
 	struct rect {
 		int x , y , w , h;
+
+		bool operator==( const rect& v ) {
+			return ( this->x == v.x
+				&& this->y == v.y
+				&& this->w == v.w
+				&& this->h == v.h );
+		}
+
+		bool operator!=( const rect& v ) {
+			return ( this->x == v.x
+				|| this->y == v.y
+				|| this->w == v.w
+				|| this->h == v.h );
+		}
 	};
 
 	void create_font( void** font , const std::string& family , int size , bool bold );

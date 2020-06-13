@@ -49,8 +49,15 @@ namespace snekUI {
 		this->items_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y + this->combo_area.h + 2, this->combo_area.w , max_item_size.h + int( this->items.size( ) ) };
 
 		/* handle opening items selector */
-		if ( render.mouse_click_in_region( this->combo_area ) ) {
+		if ( helpers::clicking( this->combo_area , this->opened ) ) {
 			this->opened = !this->opened;
+			helpers::g_input = !opened;
+
+			/* re-enable input if should */
+			if ( !this->opened ) {
+				helpers::finished_input_frame = true;
+				helpers::g_input = true;
+			}
 		}
 
 		/* handle item selector */
@@ -60,10 +67,10 @@ namespace snekUI {
 
 			renderer::rect next_item_area = this->items_area;
 			for ( const auto& item : this->items ) {
-				if ( render.mouse_click_in_region( next_item_area ) ) {
+				if ( helpers::clicking( next_item_area , true ) ) {
 					this->value = index;
 				}
-				else if ( render.mouse_in_region( next_item_area ) ) {
+				else if ( helpers::hovering( next_item_area , true ) ) {
 					hovered_index = index;
 				}
 
@@ -71,8 +78,9 @@ namespace snekUI {
 				index++;
 			}
 
-			/* TODO: REMOVE ME */
+#ifdef SNEKUI_NO_INPUT
 			parent_window.cursor_pos.y += next_item_area.y - this->items_area.y + 4;
+#endif
 		}
 
 		/* set new cursor pos Y */
@@ -93,41 +101,57 @@ namespace snekUI {
 		/* label with their selection ( and ofcourse combobox title ) */
 		std::string label_text = this->text + " - " + this->items [ this->value ];
 		renderer::dim label_text_size = render.text_size( label_text , parent_window.font );
-		render.text( { this->combo_area.x + ( this->combo_area.w / 2 ) - ( label_text_size.w / 2 ),  this->combo_area.y + ( this->combo_area.h / 2 ) - ( label_text_size.h / 2 ) } , label_text , parent_window.font , render.mouse_in_region( this->combo_area ) ? parent_window.theme.main_color : parent_window.theme.text_color );
+		render.text( { this->combo_area.x + ( this->combo_area.w / 2 ) - ( label_text_size.w / 2 ),  this->combo_area.y + ( this->combo_area.h / 2 ) - ( label_text_size.h / 2 ) } , label_text , parent_window.font , helpers::hovering( this->combo_area , this->opened ) ? parent_window.theme.main_color : parent_window.theme.text_color );
+
+		/* we'll need this later */
+		static renderer::rect best_items_area = { 0 , 0 };
 
 		/* draw overlay for items selector */
 		if ( this->opened ) {
+			/* draw it as an overlay, because we most probably will have more objects after this. */
+			parent_window.draw_overlay( [ = ] ( ) {
+				std::vector< std::function< void( ) > > draw_functions; /* we gonna need this later */
+				renderer::rect max_item_area = this->items_area;
 
-			std::vector< std::function< void( ) > > draw_functions; /* we gonna need this later */
-			renderer::rect max_item_area = this->items_area;
+				int index = 0;
+				for ( const auto& item : this->items ) {
 
-			int index = 0;
-			for ( const auto& item : this->items ) {
+					renderer::dim item_text_size = render.text_size( item , parent_window.font );
+					renderer::pos item_draw_pos = { this->items_area.x, this->items_area.y + this->items_area.h * ( index + 1 ) };
+					draw_functions.push_back( [ = ] ( ) {
+						render.text( { item_draw_pos.x + ( this->items_area.w / 2 ) - ( item_text_size.w / 2 ) , item_draw_pos.y - ( this->items_area.h / 2 ) - ( item_text_size.h / 2 ) } , item , parent_window.font , this->value == index ? parent_window.theme.object_select_color : this->hovered_index == index ? parent_window.theme.main_color : parent_window.theme.text_color );
 
-				renderer::dim item_text_size = render.text_size( item , parent_window.font );
-				renderer::pos item_draw_pos = { this->items_area.x, this->items_area.y + this->items_area.h * ( index + 1 ) };
-				draw_functions.push_back( [ = ] ( ) {
-					render.text( { item_draw_pos.x + ( this->items_area.w / 2 ) - ( item_text_size.w / 2 ) , item_draw_pos.y - ( this->items_area.h / 2 ) - ( item_text_size.h / 2 ) } , item , parent_window.font , this->value == index ? parent_window.theme.object_select_color : this->hovered_index == index ? parent_window.theme.main_color : parent_window.theme.text_color );
+						/* draw a line on the bottom ( not for the last index ) */
+						if ( index != this->items.size( ) - 1 ) {
+							render.filled_rect( item_draw_pos , { this->combo_area.w, 1 } , parent_window.theme.border_color );
+						}
 
-					/* draw a line on the bottom ( not for the last index ) */
-					if ( index != this->items.size( ) - 1 ) {
-						render.filled_rect( item_draw_pos , { this->combo_area.w, 1 } , parent_window.theme.border_color );
-					}
+						} );
 
-					} );
+					max_item_area.h += item_text_size.h * index;
+					index++;
+				}
 
-				max_item_area.h += item_text_size.h * index;
-				index++;
-			}
+				render.filled_rect( max_item_area , parent_window.theme.object_color );
+				render.outlined_rect( max_item_area , parent_window.theme.border_color );
+				for ( auto& draw_function : draw_functions ) {
+					draw_function( );
+				}
 
-			render.filled_rect( max_item_area , parent_window.theme.object_color );
-			render.outlined_rect( max_item_area , parent_window.theme.border_color );
-			for ( auto& draw_function : draw_functions ) {
-				draw_function( );
+				best_items_area = max_item_area;
+				} );
+
+			/* handle clicking outside combo-box */
+			renderer::rect max_combo_area = this->combo_area; max_combo_area.h += 2; /* because if we click between items/combo area */
+			if ( !helpers::click_switch /* after clicking to open */ && GetAsyncKeyState( VK_LBUTTON ) && !helpers::hovering( best_items_area , true ) && !helpers::hovering( max_combo_area , true ) ) {
+				/* re-enable input */
+				helpers::finished_input_frame = true;
+				helpers::g_input = true;
+
+				/* close overlay */
+				this->opened = false;
 			}
 
 		}
-
 	}
-
 }

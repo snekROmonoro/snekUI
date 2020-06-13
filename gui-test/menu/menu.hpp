@@ -14,6 +14,7 @@ namespace menu {
 	static std::shared_ptr< snekUI::window > window;
 	inline bool initialized = false;
 
-#define FIND( type, object, object_name, object_type ) \
-static auto& object = *( type* ) window->find_obj( std::string( object_name ), object_type )
+#define FIND( type, object, tab_name, group_name, object_name, object_type ) \
+static auto& object = *( type* ) window->find_obj( std::string( tab_name ), std::string( group_name ), std::string( object_name ), object_type )
+
 }

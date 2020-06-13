@@ -72,6 +72,9 @@
     <ClInclude Include="gui\objects\groupbox.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gui\render\helpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -110,6 +113,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gui\objects\groupbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\render\helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

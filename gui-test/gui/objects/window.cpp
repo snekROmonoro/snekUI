@@ -3,6 +3,8 @@
 #include "checkbox.hpp"
 #include "combobox.hpp"
 #include "tab.hpp"
+#include "groupbox.hpp"
+#include "slider.hpp"
 
 namespace snekUI {
 
@@ -46,7 +48,7 @@ namespace snekUI {
 				}
 
 				/* if we're 'dragging' */
-				if ( render.mouse_in_region( this->pos.x , this->pos.y , this->dim.w , this->theme.drag_title ? this->theme.titlebar_size : this->dim.h ) ) {
+				if ( helpers::hovering( this->pos.x , this->pos.y , this->dim.w , this->theme.drag_title ? this->theme.titlebar_size : this->dim.h ) ) {
 					m_dragging = true;
 					dragging_pos.x = mouse_pos.x - this->pos.x;
 					dragging_pos.y = mouse_pos.y - this->pos.y;
@@ -75,6 +77,10 @@ namespace snekUI {
 			if ( m_pressed != m_held ) {
 				if ( m_held ) {
 					this->opened = !this->opened;
+
+					/* re-activate input if needed */
+					if ( this->opened )
+						helpers::g_input = true;
 				}
 
 				m_pressed = m_held;
@@ -93,8 +99,16 @@ namespace snekUI {
 		/* think before drawing */
 		think( );
 
+		/* in case we have multiple windows */
+		helpers::finished_input_frame = false;
+		this->render_overlay = false;
+
 		/* check if we have the menu opened */
-		if ( !this->opened ) return;
+		if ( !this->opened ) {
+			this->render_overlay = false;
+			helpers::g_input = false;
+			return;
+		}
 
 		/* draw menu background */
 		render.filled_rect( this->area , this->theme.background_color );
@@ -137,7 +151,7 @@ namespace snekUI {
 			renderer::rect tab_rect = renderer::rect { tab_render_pos_x, this->cursor_pos.y, tab_render_width, tab_render_height };
 
 			/* handle selecting tab */
-			if ( render.mouse_click_in_region( tab_rect ) ) {
+			if ( helpers::clicking( tab_rect ) ) {
 
 				/* deselect all */
 				std::for_each( tabs.begin( ) , tabs.end( ) , [ & ] ( std::shared_ptr< tab > tab ) {
@@ -177,27 +191,57 @@ namespace snekUI {
 			);
 			} );
 
+		/* draw overlays */
+		if ( this->render_overlay && this->overlay_func )
+			this->overlay_func( );
+
+		/* handle click_switch because of some bugs */
+		helpers::click_switch = false;
+		if ( !helpers::click_switch && GetAsyncKeyState( VK_LBUTTON ) )
+			helpers::click_switch = true;
 	}
 
-	void* window::find_obj( std::string obj_name , object_type obj_type ) {
-		for ( auto& obj : this->objects ) {
-			if ( obj->type == obj_type ) {
-				switch ( obj->type ) {
-				case object_checkbox: {
+	void* window::find_obj( const std::string& tab_name , const std::string& group_name , const std::string& obj_name , object_type obj_type ) {
+		for ( auto& obj_window : this->objects ) {
+			if ( obj_window->type == object_tab ) {
+				auto obj_tab = std::static_pointer_cast< tab >( obj_window );
+				if ( obj_tab->title == tab_name ) {
+					for ( auto& tab_obj : obj_tab->objects ) {
+						if ( tab_obj->type == object_group ) {
+							auto obj_group = std::static_pointer_cast< group >( tab_obj );
+							if ( obj_group->title == group_name ) {
+								for ( auto& obj : obj_group->objects ) {
+									if ( obj->type == obj_type ) {
+										switch ( obj->type ) {
+										case object_checkbox: {
 
-					auto as_checkbox = std::static_pointer_cast< checkbox >( obj );
-					if ( as_checkbox->text == obj_name )
-						return &as_checkbox->value;
+											auto as_checkbox = std::static_pointer_cast< checkbox >( obj );
+											if ( as_checkbox->text == obj_name )
+												return &as_checkbox->value;
 
-				} break;
+										} break;
 
-				case object_combobox: {
+										case object_combobox: {
 
-					auto as_checkbox = std::static_pointer_cast< combobox >( obj );
-					if ( as_checkbox->text == obj_name )
-						return &as_checkbox->value;
+											auto as_checkbox = std::static_pointer_cast< combobox >( obj );
+											if ( as_checkbox->text == obj_name )
+												return &as_checkbox->value;
 
-				} break;
+										} break;
+
+										case object_slider: {
+
+											auto as_slider = std::static_pointer_cast< slider >( obj );
+											if ( as_slider->text == obj_name )
+												return &as_slider->value;
+
+										} break;
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

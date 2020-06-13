@@ -19,7 +19,7 @@ void menu::create( )
 void menu::destroy( )
 {
 	if ( menu_title_font ) menu_title_font->Release( );
-	if ( menu_font) menu_font->Release( );
+	if ( menu_font ) menu_font->Release( );
 }
 
 void menu::reset( )

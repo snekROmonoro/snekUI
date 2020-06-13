@@ -19,7 +19,7 @@ namespace snekUI {
 		this->area = renderer::rect { parent_window.cursor_pos.x + check_area.w + 2, parent_window.cursor_pos.y, text_size.w, text_size.h };
 
 		/* handle checking area pressing */
-		if ( render.mouse_click_in_region( renderer::rect { this->check_area.x, this->check_area.y, this->check_area.w + this->area.w, this->check_area.h } ) ) {
+		if ( helpers::clicking( renderer::rect { this->check_area.x, this->check_area.y, this->check_area.w + this->area.w, this->check_area.h } ) ) {
 			this->value = !this->value;
 		}
 

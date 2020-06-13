@@ -152,6 +152,7 @@
     <ClInclude Include="gui\objects\slider.hpp" />
     <ClInclude Include="gui\objects\tab.hpp" />
     <ClInclude Include="gui\objects\window.hpp" />
+    <ClInclude Include="gui\render\helpers.hpp" />
     <ClInclude Include="gui\render\render.hpp" />
     <ClInclude Include="gui\theme\theme.hpp" />
     <ClInclude Include="main.hpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="gui\objects\slider.cpp" />
     <ClCompile Include="gui\objects\tab.cpp" />
     <ClCompile Include="gui\objects\window.cpp" />
+    <ClCompile Include="gui\render\helpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="other\renderer\renderer.cpp" />

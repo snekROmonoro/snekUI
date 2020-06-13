@@ -30,7 +30,7 @@ namespace snekUI {
 		this->slider_rect = { parent_window.cursor_pos.x, parent_window.cursor_pos.y + text_size.h + 2, this->slider_size.w, this->slider_size.h };
 
 		/* handle value */
-		if ( render.mouse_in_region( this->slider_rect ) && GetAsyncKeyState( VK_LBUTTON ) ) {
+		if ( helpers::hovering( this->slider_rect ) && GetAsyncKeyState( VK_LBUTTON ) && !helpers::finished_input_frame ) {
 			renderer::pos mouse_pos;
 			render.mouse_pos( mouse_pos );
 

@@ -16,7 +16,7 @@ namespace snekUI {
 			this->key = key;
 			this->pos = pos;
 			this->dim = dim;
-			
+
 			type = object_window;
 		}
 
@@ -48,7 +48,7 @@ namespace snekUI {
 			return false;
 		}
 
-		void* find_obj( std::string obj_name , object_type obj_type );
+		void* find_obj( const std::string& tab_name , const std::string& group_name , const std::string& obj_name , object_type obj_type );
 
 		LPD3DXFONT title_font = nullptr;
 		LPD3DXFONT font = nullptr;
@@ -61,6 +61,14 @@ namespace snekUI {
 		/* other vars */
 		theme_t theme = theme_t( );
 		renderer::pos cursor_pos { 0, 0 };
+
+		/* overlays */
+		std::function< void( ) > overlay_func;
+		bool render_overlay = true;
+		void draw_overlay( const std::function< void( ) >& overlay_renderer ) {
+			overlay_func = overlay_renderer;
+			render_overlay = true;
+		}
 
 		/* objects */
 		std::vector< std::shared_ptr< object > > objects;

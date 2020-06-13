@@ -5,13 +5,8 @@
 #include <vector>
 #include "../../other/color.hpp"
 #include "../../other/renderer/renderer.hpp"
+#include "helpers.hpp"
 namespace snekUI {
-
-	/* many things shouldn't actually be in render.hpp, but since making another file for all of these is useless... */
-	class dividers {
-	public:
-		std::vector< int > columns_per_row;
-	};
 
 	struct render {
 
@@ -84,55 +79,6 @@ namespace snekUI {
 
 		virtual void mouse_pos( renderer::pos& p ) {
 			mouse_pos( p.x , p.y );
-		}
-
-		virtual bool mouse_in_region( int x , int y , int w , int h ) {
-			renderer::pos mpos;
-			mouse_pos( mpos );
-
-			if ( mpos.x > x && mpos.y > y && mpos.x < x + w && mpos.y < y + h )
-				return true;
-
-			return false;
-		}
-
-		virtual bool mouse_in_region( renderer::pos p1 , renderer::pos p2 ) {
-			return mouse_in_region( p1.x , p1.y , p2.x , p2.y );
-		}
-
-		virtual bool mouse_in_region( renderer::pos p , renderer::dim d ) {
-			return mouse_in_region( p.x , p.y , d.w , d.h );
-		}
-
-		virtual bool mouse_in_region( renderer::rect r ) {
-			return mouse_in_region( r.x , r.y , r.w , r.h );
-		}
-
-		virtual bool mouse_click_in_region( int x , int y , int w , int h ) {
-			static bool m_clicked = false;
-			if ( !m_clicked && GetAsyncKeyState( VK_LBUTTON ) ) {
-				if ( mouse_in_region( x , y , w , h ) ) {
-					m_clicked = true;
-					return true;
-				}
-			}
-			else if ( m_clicked && !GetAsyncKeyState( VK_LBUTTON ) ) {
-				m_clicked = false;
-			}
-
-			return false;
-		}
-
-		virtual bool mouse_click_in_region( renderer::pos p1 , renderer::pos p2 ) {
-			return mouse_click_in_region( p1.x , p1.y , p2.x , p2.y );
-		}
-
-		virtual bool mouse_click_in_region( renderer::pos p , renderer::dim d ) {
-			return mouse_click_in_region( p.x , p.y , d.w , d.h );
-		}
-
-		virtual bool mouse_click_in_region( renderer::rect r ) {
-			return mouse_click_in_region( r.x , r.y , r.w , r.h );
 		}
 
 	}static render;
