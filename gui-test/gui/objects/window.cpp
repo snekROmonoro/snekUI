@@ -6,6 +6,7 @@
 #include "groupbox.hpp"
 #include "slider.hpp"
 #include "button.hpp"
+#include "label.hpp"
 
 namespace snekUI {
 
@@ -179,7 +180,7 @@ namespace snekUI {
 			} );
 
 		/* move new objects down */
-		this->cursor_pos.y += add_cursor_pos_y + 2;
+		this->cursor_pos.y += add_cursor_pos_y + this->theme.object_spacing;
 
 		/* draw objects inside window */
 		render.clip( this->area , [ = ] ( ) {
@@ -243,6 +244,14 @@ namespace snekUI {
 											auto as_button = std::static_pointer_cast< button >( obj );
 											if ( as_button->text == obj_name )
 												return &as_button->button_func;
+
+										} break;
+
+										case object_label: {
+
+											auto as_label = std::static_pointer_cast< label >( obj );
+											if ( as_label->text == obj_name )
+												return &as_label->text;
 
 										} break;
 										}

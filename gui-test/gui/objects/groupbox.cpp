@@ -21,7 +21,7 @@ namespace snekUI {
 
 		/* move all objects inside group */
 		cursor_pos.x += parent_window.theme.column_spacing;
-		cursor_pos.y += group_title_area.h + 2;
+		cursor_pos.y += group_title_area.h + parent_window.theme.object_spacing;
 
 		/* draw group objects */
 		render.clip( group_area , [ & ] ( ) {

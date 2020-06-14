@@ -48,7 +48,7 @@ namespace snekUI {
 		this->value = std::clamp( this->value , this->min , this->max );
 
 		/* set new cursor pos Y */
-		parent_window.cursor_pos.y += text_size.h + this->slider_rect.h + 8;
+		parent_window.cursor_pos.y += text_size.h + this->slider_rect.h + ( parent_window.theme.object_spacing * 2 );
 	}
 
 	void slider::draw( ) {

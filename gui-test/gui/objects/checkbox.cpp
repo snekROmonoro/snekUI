@@ -24,7 +24,7 @@ namespace snekUI {
 		}
 
 		/* set new cursor pos Y */
-		parent_window.cursor_pos.y += this->check_area.h + 2;
+		parent_window.cursor_pos.y += this->check_area.h + parent_window.theme.object_spacing;
 
 	}
 

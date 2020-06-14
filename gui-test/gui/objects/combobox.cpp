@@ -79,12 +79,12 @@ namespace snekUI {
 			}
 
 #ifdef SNEKUI_NO_INPUT
-			parent_window.cursor_pos.y += next_item_area.y - this->items_area.y + 4;
+			parent_window.cursor_pos.y += next_item_area.y - this->items_area.y + parent_window.theme.object_spacing;
 #endif
 		}
 
 		/* set new cursor pos Y */
-		parent_window.cursor_pos.y += this->combo_area.h + 2;
+		parent_window.cursor_pos.y += this->combo_area.h + parent_window.theme.object_spacing;
 
 	}
 

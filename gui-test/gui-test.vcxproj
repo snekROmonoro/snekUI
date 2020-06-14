@@ -149,6 +149,7 @@
     <ClInclude Include="gui\objects\checkbox.hpp" />
     <ClInclude Include="gui\objects\combobox.hpp" />
     <ClInclude Include="gui\objects\groupbox.hpp" />
+    <ClInclude Include="gui\objects\label.hpp" />
     <ClInclude Include="gui\objects\object.hpp" />
     <ClInclude Include="gui\objects\slider.hpp" />
     <ClInclude Include="gui\objects\tab.hpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="gui\objects\checkbox.cpp" />
     <ClCompile Include="gui\objects\combobox.cpp" />
     <ClCompile Include="gui\objects\groupbox.cpp" />
+    <ClCompile Include="gui\objects\label.cpp" />
     <ClCompile Include="gui\objects\object.cpp" />
     <ClCompile Include="gui\objects\slider.cpp" />
     <ClCompile Include="gui\objects\tab.cpp" />

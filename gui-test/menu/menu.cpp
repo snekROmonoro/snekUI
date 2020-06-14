@@ -64,6 +64,7 @@ void menu::init( ) {
 			new_group->add_element( std::make_shared< snekUI::slider >( "test_slider" , 0 , 100 ) );
 			new_group->add_element( std::make_shared< snekUI::checkbox >( "test3" ) );
 			new_group->add_element( std::make_shared< snekUI::button >( "test_button" , [ ] ( ) { testbuttonvar = !testbuttonvar; } ) );
+			new_group->add_element( std::make_shared< snekUI::label >( "Roses are red. Violets are blue" ) );
 		} new_tab->add_element( new_group );
 
 		new_tab->add_columns( 1 );

@@ -5,11 +5,10 @@
 namespace snekUI {
 	struct theme_t {
 		theme_t( ) {
-			animation_speed = 20 * 0.01; /* we transform the speed to decimals. */
-
 			draggable = true;
 			drag_title = true;
 
+			object_spacing = 4;
 			column_spacing = 4;
 
 			titlebar_color = color( 42 , 42 , 42 );
@@ -27,11 +26,10 @@ namespace snekUI {
 			text_color = color( 200 , 200 , 200 );
 		}
 
-		double animation_speed;
-
 		bool draggable;
 		bool drag_title;
 
+		int object_spacing;
 		int column_spacing;
 
 		color titlebar_color;

@@ -12,7 +12,8 @@ namespace snekUI {
 		object_checkbox,
 		object_combobox,
 		object_slider,
-		object_button
+		object_button,
+		object_label
 	};
 
 	class object {

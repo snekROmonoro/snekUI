@@ -6,6 +6,7 @@
 #include "objects/checkbox.hpp"
 #include "objects/combobox.hpp"
 #include "objects/groupbox.hpp"
+#include "objects/label.hpp"
 #include "objects/slider.hpp"
 #include "objects/tab.hpp"
 #include "objects/window.hpp"
