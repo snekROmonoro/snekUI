@@ -36,6 +36,8 @@ namespace snekUI {
 		render.outlined_rect( this->label_area , parent_window.theme.border_color );
 
 		const renderer::pos text_pos = { this->label_area.x + ( this->label_area.w / 2 ) - ( text_size.w / 2 ), this->label_area.y + ( this->label_area.h / 2 ) - ( text_size.h / 2 ) };
-		render.text( text_pos , this->text , parent_window.font , helpers::clicking( this->label_area ) ? parent_window.theme.object_select_color : helpers::hovering( this->label_area ) ? parent_window.theme.main_color : parent_window.theme.text_color );
+		render.clip( this->label_area , [ = ] ( ) { /* we must clip it, in case our text is long */
+			render.text( text_pos , this->text , parent_window.font , helpers::clicking( this->label_area ) ? parent_window.theme.object_select_color : helpers::hovering( this->label_area ) ? parent_window.theme.main_color : parent_window.theme.text_color );
+			} );
 	}
 }
