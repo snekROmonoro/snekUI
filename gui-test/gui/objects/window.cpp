@@ -104,6 +104,7 @@ namespace snekUI {
 		/* in case we have multiple windows */
 		helpers::finished_input_frame = false;
 		this->render_overlay = false;
+		this->handle_keyboard = false;
 
 		/* check if we have the menu opened */
 		if ( !this->opened ) {

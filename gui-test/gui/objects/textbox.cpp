@@ -62,14 +62,14 @@ namespace snekUI {
 		this->text_pos = parent_window.cursor_pos;
 
 		/* get textbox rect which we're going to use to draw! */
-		this->textbox_rect = { parent_window.cursor_pos.x, parent_window.cursor_pos.y + text_size.h + 2, this->area.w, render.text_size( "●" , parent_window.font ).h /* can't think of one */ };
+		this->textbox_rect = { parent_window.cursor_pos.x, parent_window.cursor_pos.y + text_size.h + 2, this->area.w, render.text_size( "*" , parent_window.font ).h /* can't think of one */ };
 
 		if ( helpers::clicking( this->textbox_rect , this->opened ) && helpers::g_input ) {
 			this->opened = !this->opened;
 			helpers::g_input = !opened;
 		}
 
-		/* check if clicking outside of area (disable input)*/
+		/* check if clicking outside of area (disable input) */
 		if ( !helpers::click_switch /* after clicking to open */ && GetAsyncKeyState( VK_LBUTTON ) && !helpers::hovering( this->textbox_rect , true ) ) {
 			/* re-enable input */
 			helpers::finished_input_frame = true;
@@ -82,8 +82,7 @@ namespace snekUI {
 
 		if ( this->opened ) {
 			/* set input handler */
-			parent_window.keyboard_handler_func = [ = ] ( char key ) { handle_input( key ); };
-			parent_window.handle_keyboard = true;
+			parent_window.keyboard_handle( [ = ] ( char key ) { handle_input( key ); } );
 		}
 
 		/* set new cursor pos Y */
@@ -101,7 +100,7 @@ namespace snekUI {
 		/* replace visible characters with stars (*)*/
 		if ( this->hide_input ) {
 			input_text.erase( );
-			std::for_each( this->buf.begin( ) , this->buf.end( ) , [ & ] ( wchar_t character ) { input_text += std::string( "●" ); } );
+			std::for_each( this->buf.begin( ) , this->buf.end( ) , [ & ] ( wchar_t character ) { input_text += std::string( "*" ); } );
 		}
 
 		renderer::dim input_text_size = render.text_size( input_text , parent_window.font );
@@ -116,7 +115,7 @@ namespace snekUI {
 		/* input cursor */
 		if ( this->opened ) {
 			double time = static_cast< double > ( std::chrono::duration_cast< std::chrono::milliseconds > ( std::chrono::system_clock::now( ).time_since_epoch( ) ).count( ) ) / 1000.0;
-			render.filled_rect( { input_text_pos.x + input_text_size.w + 2, this->textbox_rect.y + 2, 2, render.text_size( "●" , parent_window.font ).h - 4 } , parent_window.theme.text_color.alpha( static_cast< int >( std::sin( time * 2.0 * 3.141f ) * 127.5 + 127.5 ) ) );
+			render.filled_rect( { input_text_pos.x + input_text_size.w + 2, this->textbox_rect.y + 2, 2, render.text_size( "*" , parent_window.font ).h - 4 } , parent_window.theme.text_color.alpha( static_cast< int >( std::sin( time * 2.0 * 3.141f ) * 127.5 + 127.5 ) ) );
 		}
 
 	}
