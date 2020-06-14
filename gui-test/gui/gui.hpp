@@ -9,6 +9,7 @@
 #include "objects/label.hpp"
 #include "objects/slider.hpp"
 #include "objects/tab.hpp"
+#include "objects/textbox.hpp"
 #include "objects/window.hpp"
 
 #include "theme/theme.hpp"

@@ -6,15 +6,7 @@ long __stdcall menu::wndproc( HWND hwnd , UINT msg , WPARAM wparam , LPARAM lpar
 	if ( !initialized )
 		return false;
 
-#ifdef FIXED_WNDPROC
 	return window->wndproc( hwnd , msg , wparam , lparam );
-#else
-	window->wndproc( hwnd , msg , wparam , lparam );
-	if ( !snekUI::helpers::g_input )
-		return true;
-
-	return false;
-#endif
 }
 
 void menu::create( )
@@ -65,6 +57,7 @@ void menu::init( ) {
 			new_group->add_element( std::make_shared< snekUI::checkbox >( "test3" ) );
 			new_group->add_element( std::make_shared< snekUI::button >( "test_button" , [ ] ( ) { testbuttonvar = !testbuttonvar; } ) );
 			new_group->add_element( std::make_shared< snekUI::label >( "Roses are red. Violets are blue" ) );
+			new_group->add_element( std::make_shared< snekUI::textbox >( "test_textbox", "Hello there!" ) );
 		} new_tab->add_element( new_group );
 
 		new_tab->add_columns( 1 );

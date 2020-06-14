@@ -6,14 +6,15 @@
 namespace snekUI {
 
 	enum object_type {
-		object_window,
-		object_tab,
-		object_group,
-		object_checkbox,
-		object_combobox,
-		object_slider,
-		object_button,
-		object_label
+		object_window ,
+		object_tab ,
+		object_group ,
+		object_checkbox ,
+		object_combobox ,
+		object_slider ,
+		object_button ,
+		object_label ,
+		object_textbox
 	};
 
 	class object {

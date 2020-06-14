@@ -108,6 +108,7 @@ namespace snekUI {
 		/* check if we have the menu opened */
 		if ( !this->opened ) {
 			this->render_overlay = false;
+			this->handle_keyboard = false;
 			helpers::g_input = false;
 			return;
 		}
