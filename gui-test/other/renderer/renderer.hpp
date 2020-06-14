@@ -30,10 +30,10 @@ namespace renderer {
 		}
 
 		bool operator!=( const rect& v ) {
-			return ( this->x == v.x
-				|| this->y == v.y
-				|| this->w == v.w
-				|| this->h == v.h );
+			return ( this->x != v.x
+				|| this->y != v.y
+				|| this->w != v.w
+				|| this->h != v.h );
 		}
 	};
 
