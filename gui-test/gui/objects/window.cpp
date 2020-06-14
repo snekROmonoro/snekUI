@@ -5,6 +5,7 @@
 #include "tab.hpp"
 #include "groupbox.hpp"
 #include "slider.hpp"
+#include "button.hpp"
 
 namespace snekUI {
 
@@ -234,6 +235,14 @@ namespace snekUI {
 											auto as_slider = std::static_pointer_cast< slider >( obj );
 											if ( as_slider->text == obj_name )
 												return &as_slider->value;
+
+										} break;
+
+										case object_button: {
+
+											auto as_button = std::static_pointer_cast< button >( obj );
+											if ( as_button->text == obj_name )
+												return &as_button->button_func;
 
 										} break;
 										}

@@ -24,7 +24,7 @@ namespace snekUI {
 		this->button_area = renderer::rect { parent_window.cursor_pos.x, parent_window.cursor_pos.y, this->button_size.w, this->button_size.h };
 
 		/* handle pressing and run function */
-		if ( helpers::clicking( this->button_area ) ) {
+		if ( helpers::clicking( this->button_area ) && this->button_func ) {
 			this->button_func( );
 		}
 

@@ -29,8 +29,15 @@ namespace snekUI {
 		/* get slider rect which we're going to use to draw! */
 		this->slider_rect = { parent_window.cursor_pos.x, parent_window.cursor_pos.y + text_size.h + 2, this->slider_size.w, this->slider_size.h };
 
+		/* so we wait till we release mouse off slider. */
+		static bool may_change_value = false;
+		if ( helpers::clicking( this->slider_rect ) )
+			may_change_value = true;
+		else if ( !GetAsyncKeyState( VK_LBUTTON ) || helpers::finished_input_frame )
+			may_change_value = false;
+
 		/* handle value */
-		if ( helpers::hovering( this->slider_rect ) && GetAsyncKeyState( VK_LBUTTON ) && !helpers::finished_input_frame ) {
+		if ( may_change_value ) {
 			renderer::pos mouse_pos;
 			render.mouse_pos( mouse_pos );
 

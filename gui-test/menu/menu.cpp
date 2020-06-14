@@ -6,7 +6,15 @@ long __stdcall menu::wndproc( HWND hwnd , UINT msg , WPARAM wparam , LPARAM lpar
 	if ( !initialized )
 		return false;
 
+#ifdef FIXED_WNDPROC
 	return window->wndproc( hwnd , msg , wparam , lparam );
+#else
+	window->wndproc( hwnd , msg , wparam , lparam );
+	if ( !snekUI::helpers::g_input )
+		return true;
+
+	return false;
+#endif
 }
 
 void menu::create( )
@@ -95,8 +103,8 @@ void menu::draw( )
 
 	window->draw( );
 
-	if ( testbuttonvar ) {
-		renderer::text( window->pos.x , window->pos.y - 20 , color( ).to_d3d( ) , menu_font , "hello" );
+	if ( testbuttonvar && menu_title_font ) {
+		renderer::text( window->pos.x , window->pos.y - 20 , color( ).to_d3d( ) , menu_title_font , "hello" );
 	}
 
 }
