@@ -12,8 +12,8 @@ long __stdcall menu::wndproc( HWND hwnd , UINT msg , WPARAM wparam , LPARAM lpar
 void menu::create( )
 {
 	/* we will use this function to create our fonts */
-	renderer::create_font( ( void** ) &menu_title_font , "Tahoma" , 16 , FW_BOLD | FW_LIGHT );
-	renderer::create_font( ( void** ) &menu_font , "Verdana" , 16 , FW_NORMAL );
+	renderer::create_font( ( void** ) & menu_title_font , "Tahoma" , 16 , FW_BOLD | FW_LIGHT );
+	renderer::create_font( ( void** ) & menu_font , "Verdana" , 16 , FW_NORMAL );
 }
 
 void menu::destroy( )
@@ -26,13 +26,13 @@ void menu::reset( )
 {
 	create( );
 }
-bool testbuttonvar = false;
-void menu::init( ) {
-	/* create ( not only once ) */
-	create( );
 
-	if ( initialized )
-		return;
+bool testbuttonvar = false;
+
+void menu::init( ) {
+
+	/* create fonts */
+	create( );
 
 	/* get screen size */
 	renderer::dim screen_size;
@@ -57,9 +57,7 @@ void menu::init( ) {
 			new_group->add_element( std::make_shared< snekUI::checkbox >( "test3" ) );
 			new_group->add_element( std::make_shared< snekUI::button >( "test_button" , [ ] ( ) { testbuttonvar = !testbuttonvar; } ) );
 			new_group->add_element( std::make_shared< snekUI::label >( "Roses are red. Violets are blue" ) );
-
-			/* textbox f*cks input up... */
-		//	new_group->add_element( std::make_shared< snekUI::textbox >( "test_textbox", "Hello there!" ) );
+			new_group->add_element( std::make_shared< snekUI::textbox >( "test_textbox", "Hello there!" ) );
 		} new_tab->add_element( new_group );
 
 		new_tab->add_columns( 1 );
@@ -91,12 +89,10 @@ void menu::init( ) {
 
 void menu::draw( )
 {
-	/* initialize */
-	init( ); /* in-case we already initialized, it won't re-init, because 'initialized' bool will be true. */
-
 	/* check if we really initialized */
 	if ( !initialized ) return;
 
+	window->update_font( menu_title_font , menu_font );
 	window->draw( );
 
 	if ( testbuttonvar && menu_title_font ) {

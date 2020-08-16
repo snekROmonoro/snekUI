@@ -33,7 +33,32 @@ namespace snekUI {
 			type = object_window;
 		}
 
+		window( std::string title , bool opened , int key , renderer::pos pos , renderer::dim dim ) {
+			this->title = title;
+			this->opened = opened;
+			this->key = key;
+			this->pos = pos;
+			this->dim = dim;
+
+			type = object_window;
+		}
+
+		window( std::string title , bool opened , int key , int x , int y , int w , int h ) {
+			this->title = title;
+			this->opened = opened;
+			this->key = key;
+			this->pos = renderer::pos { x , y };
+			this->dim = renderer::dim { w , h };
+
+			type = object_window;
+		}
+
 		~window( ) { }
+
+		void update_font( LPD3DXFONT title_font , LPD3DXFONT font ) {
+			this->title_font = title_font;
+			this->font = font;
+		}
 
 		void think( );
 		void draw( ) override;

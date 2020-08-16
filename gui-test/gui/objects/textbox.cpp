@@ -13,8 +13,8 @@ namespace snekUI {
 		case VK_TAB:
 		case VK_ESCAPE:
 		case VK_RETURN: /* anything that will toggle selection */
-			helpers::g_input = true;
 			this->opened = false;
+			helpers::g_input = true;
 			parent_window.handle_keyboard = false;
 			return;
 		case VK_BACK: /* backspace */
@@ -64,20 +64,20 @@ namespace snekUI {
 		/* get textbox rect which we're going to use to draw! */
 		this->textbox_rect = { parent_window.cursor_pos.x, parent_window.cursor_pos.y + text_size.h + 2, this->area.w, render.text_size( "*" , parent_window.font ).h /* can't think of one */ };
 
-		if ( helpers::clicking( this->textbox_rect , this->opened ) && helpers::g_input ) {
+		if ( helpers::clicking( this->textbox_rect , this->opened ) && !this->opened ) {
 			this->opened = !this->opened;
-			helpers::g_input = !opened;
+			helpers::g_input = false;
 		}
 
 		/* check if clicking outside of area (disable input) */
-		if ( !helpers::click_switch /* after clicking to open */ && GetAsyncKeyState( VK_LBUTTON ) && !helpers::hovering( this->textbox_rect , true ) ) {
+		if ( this->opened && !helpers::click_switch /* after clicking to open */ && GetAsyncKeyState( VK_LBUTTON ) && !helpers::hovering( this->textbox_rect , true ) ) {
 			/* re-enable input */
 			helpers::finished_input_frame = true;
 			helpers::g_input = true;
 
 			/* close */
-			this->opened = false;
 			parent_window.handle_keyboard = false;
+			this->opened = false;
 		}
 
 		if ( this->opened ) {

@@ -35,12 +35,15 @@ int main( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPWSTR lpCmdLine , int
 		return 0;
 	}
 
-	/* Start Render Manager */
-	renderer::start( g_pd3dDevice );
-
 	/* Show window */
 	ShowWindow( g_pWindow , SW_SHOWDEFAULT );
 	UpdateWindow( g_pWindow );
+
+	/* Start Render Manager */
+	renderer::start( g_pd3dDevice );
+
+	/* Init menu */
+	menu::init( );
 
 	MSG msg;
 	ZeroMemory( &msg , sizeof( msg ) );
